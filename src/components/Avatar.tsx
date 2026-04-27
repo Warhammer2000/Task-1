@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { getAvatarColor, getInitials } from '../lib/initials'
 
 interface AvatarProps {
@@ -7,6 +8,9 @@ interface AvatarProps {
   /**
    * When true, render a deterministic DiceBear `bottts` droid SVG instead of
    * an initials placeholder. The seed is the user's name, so reloads are stable.
+   * Falls back to the initials placeholder if the SVG fails to load (CDN
+   * outage, network blip), so the visual replica never breaks on external
+   * dependency failure.
    */
   useAvatar?: boolean
 }
@@ -23,6 +27,8 @@ const SIZE_CLASS: Record<NonNullable<AvatarProps['size']>, string> = {
  *   - default            → colored initials placeholder (deterministic per name)
  *
  * Both are RAI-clean: no real human photographs, no corporate identifiers.
+ * If a DiceBear request fails, we transparently degrade to initials so the
+ * visual replica never shows a broken image.
  */
 export function Avatar({
   name,
@@ -30,20 +36,23 @@ export function Avatar({
   className = '',
   useAvatar = false,
 }: AvatarProps) {
-  if (useAvatar) {
+  const [imageFailed, setImageFailed] = useState(false)
+  const color = getAvatarColor(name)
+  const initials = getInitials(name)
+
+  if (useAvatar && !imageFailed) {
     const url = `https://api.dicebear.com/9.x/bottts/svg?seed=${encodeURIComponent(name)}`
     return (
       <img
         src={url}
         alt={name}
         loading="lazy"
+        onError={() => setImageFailed(true)}
         className={`${SIZE_CLASS[size]} ${className} rounded-full bg-slate-100 object-cover shrink-0 select-none`}
       />
     )
   }
 
-  const color = getAvatarColor(name)
-  const initials = getInitials(name)
   return (
     <div
       role="img"
