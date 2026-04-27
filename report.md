@@ -1,8 +1,9 @@
 # Task 1 — The Clone Wars · Report
 
-> **Live**: <https://warhammer2000.github.io/ai-challenge-2026/task-1/>
-> **Source**: <https://github.com/Warhammer2000/ai-challenge-2026/tree/main/task-1>
-> **Brief theme**: vibe coding — replicate Vention's internal Leaderboard exactly,
+> **Live**: <https://warhammer2000.github.io/Task-1/>
+> **Source**: <https://github.com/Warhammer2000/Task-1>
+> **Cross-task working repo**: <https://github.com/Warhammer2000/ai-challenge-2026>
+> **Brief theme**: vibe coding — replicate the internal Leaderboard exactly,
 > with all data replaced.
 
 ---
@@ -208,10 +209,9 @@ not a replica* — bonus 0 under the one-shot rule.
 ## 7. Run locally
 
 ```bash
-cd task-1/app
 npm install
 npm run dev
-# open http://localhost:5173/ai-challenge-2026/task-1/
+# open http://localhost:5173/Task-1/
 ```
 
 Build: `npm run build` → `dist/`. Deploy: `npm run deploy`.
